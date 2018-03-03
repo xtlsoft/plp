@@ -1,2 +1,2 @@
-# plp
+# PLP
 PLP - PHP Language Parser
