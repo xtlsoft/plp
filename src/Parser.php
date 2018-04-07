@@ -14,9 +14,9 @@
 
         protected $rules = [];
 
-        public function addRule($match, $callback, $priority = 50, $fillWithBlank = true){
+        public function addRule($name, $match, $callback, $priority = 50, $fillWithBlank = true){
 
-            @$this->rules[$priority][$match] = ["callback" => $callback, "fillWithBlank" => $fillWithBlank];
+            @$this->rules[$priority][$name] = ["match" => $match, "callback" => $callback, "fillWithBlank" => $fillWithBlank];
             return $this;
 
         }
@@ -45,9 +45,9 @@
 
         }
 
-        public function parse(){
+        public function parse($code){
 
-            $collection = new \PL\Parser\Utils\ParserCollection();
+            $collection = new \PL\Parser\Utils\ParserCollection($code, $this);
 
             foreach($this->getPriorities() as $v){
                 $rules = $this->getRules($v);

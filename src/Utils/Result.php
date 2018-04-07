@@ -12,4 +12,25 @@
 
     class Result {
         
+        protected $type;
+        protected $data;
+
+        public function __invoke($type, $var){
+
+            $this->type = $type;
+            $this->data = $var;
+
+            return $this;
+
+        }
+
+        public function toArray(){
+
+            return [
+                "type" => $this->type,
+                "data" => $this->data
+            ];
+
+        }
+
     }

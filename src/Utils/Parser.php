@@ -22,10 +22,30 @@
 
         }
 
-        public function parseCallback($match, $rule, $collection){
+        public function parseCallback($match, $rule){
 
-            $result = call_user_func($rule['callback'], $this, $collection, $match, new \PL\Parser\Utils\Result());
+            $result = call_user_func($rule['callback'], $this, $this->collection, $this->collection->getParser(), $match, new \PL\Parser\Utils\Result());
             
+            $this->collection->addResult($result->toArray());
+
+        }
+
+        public function parse(){
+
+            $parser = $this;
+
+            foreach($this->rules as $rule){
+
+                $this->collection->setCode(preg_replace_callback($rule["match"], function($match) use ($parser, $rule){
+                    $parser->parseCallback($match, $rule);
+                    if($rule['fillWithBlank']){
+                        return "";
+                    }else{
+                        return $match[0];
+                    }
+                }, $this->collection->getCode()));
+
+            }
 
         }
 
